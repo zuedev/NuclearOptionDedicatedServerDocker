@@ -1,0 +1,11 @@
+services:
+  nuclearoption:
+    build: .
+    # environment:
+    #   - STEAM_USERNAME=anonymous
+    #   - STEAM_PASSWORD=
+    network_mode: host
+    env_file:
+      - .env
+    volumes:
+      - ./nuclearoption:/app
