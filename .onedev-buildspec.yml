@@ -1,0 +1,20 @@
+version: 46
+jobs:
+- name: Push to GitHub Mirror
+  steps:
+  - type: PushRepository
+    name: Push to GitHub Mirror
+    remoteUrl: https://github.com/zuedev/NuclearOptionDedicatedServerDocker
+    userName: zuedev
+    passwordSecret: github-access-token
+    force: true
+    condition: SUCCESSFUL
+    optional: false
+  triggers:
+  - type: BranchUpdateTrigger
+    userMatch: anyone
+  - type: TagCreateTrigger
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 14400
