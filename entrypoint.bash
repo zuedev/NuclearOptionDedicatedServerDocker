@@ -13,7 +13,13 @@ fi
 # install game server via steamcmd
 steamcmd +login "$STEAM_USERNAME" "$STEAM_PASSWORD" +force_install_dir /app +app_update 3930080 validate +quit
 
-# handle configuration file changes
+# apply overlay if it exists
+if [ -d "/overlay" ]; then
+    echo "Applying overlay from /overlay to /app"
+    cp -r /overlay/* /app/
+fi
+
+# handle configuration file changes via environment variables
 CONFIG_FIELDS=(
     "ServerName"
     "MaxPlayers"
