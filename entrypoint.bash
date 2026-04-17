@@ -20,19 +20,37 @@ if [ -d "/overlay" ]; then
 fi
 
 # handle configuration file changes via environment variables
+# pattern is: even index is the field name, odd index is the type (String, Boolean, Integer)
 CONFIG_FIELDS=(
+    "MissionDirectory"
+    "String"
+    "ModdedServer"
+    "Boolean"
+    "Hidden"
+    "Boolean"
     "ServerName"
-    "MaxPlayers"
+    "String"
     "Password"
+    "String"
+    "MaxPlayers"
+    "Integer"
+    "DisableErrorKick"
+    "Boolean"
+    "NoPlayerStopTime"
+    "Integer"
+    "PostMissionDelay"
+    "Integer"
+    "RotationType"
+    "Integer"
 )
 
 CONFIG_PATH="/app/DedicatedServerConfig.json"
 
 for FIELD in "${CONFIG_FIELDS[@]}"; do
-    ENV_VAR="CONFIG_${FIELD^^}"
-    if [ -n "${!ENV_VAR}" ]; then
-        echo "Setting $FIELD to ${!ENV_VAR} in config file."
-        jq --arg value "${!ENV_VAR}" ".${FIELD} = \$value" "$CONFIG_PATH" > tmp.$$.json && mv tmp.$$.json "$CONFIG_PATH"
+    ENV_VAR_NAME="CONFIG_${FIELD^^}"
+    if [ -n "${!ENV_VAR_NAME}" ]; then
+        echo "Setting $FIELD to ${!ENV_VAR_NAME} in $CONFIG_PATH"
+        jq --arg value "${!ENV_VAR_NAME}" --arg field "$FIELD" '(.[$field] // empty) |= ($value | if type == "boolean" then (if $value == "true" then true else false end) elif type == "number" then ($value | tonumber) else $value end)' "$CONFIG_PATH" > "$CONFIG_PATH.tmp" && mv "$CONFIG_PATH.tmp" "$CONFIG_PATH"
     fi
 done
 
