@@ -1,0 +1,15 @@
+{
+  "$schema": "https://onedev.docker-compose.zue.dev/gitinfo/~raw/main/gitinfo.schema.json",
+  "root": "https://onedev.docker-compose.zue.dev/NuclearOptionDedicatedServerDocker",
+  "gitmail": "patches+NuclearOptionDedicatedServerDocker@zue.dev",
+  "mirrors": [
+    "https://github.com/zuedev/NuclearOptionDedicatedServerDocker"
+  ],
+  "maintainers": [
+    [
+      "Alex (@zuedev)",
+      "zuedev@gmail.com"
+    ]
+  ],
+  "license": "Unlicense"
+}
