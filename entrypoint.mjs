@@ -96,6 +96,20 @@ if (process.env.WORKSHOP_ITEMS) {
       { stdio: "inherit" },
     );
   }
+
+  // Move downloaded workshop items to the /app/Mods directory
+  const steamWorkshopPath = `/home/steam/Steam/steamapps/workshop/content/3930080`;
+  const modsPath = `/app/Mods`;
+
+  for (const itemId of itemIds) {
+    const sourcePath = `${steamWorkshopPath}/${itemId}`;
+    if (existsSync(sourcePath)) {
+      console.log(`Copying workshop item ${itemId} to ${modsPath}`);
+      cpSync(sourcePath, `${modsPath}/${itemId}`, { recursive: true });
+    } else {
+      console.warn(`Workshop item ${itemId} not found at ${sourcePath}`);
+    }
+  }
 }
 
 // Run the server
