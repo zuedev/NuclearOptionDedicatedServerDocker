@@ -77,5 +77,26 @@ for (const { name, type } of CONFIG_FIELDS) {
 
 writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2) + "\n");
 
+// Do we have any workshop items to download?
+if (process.env.WORKSHOP_ITEMS) {
+  const itemIds = process.env.WORKSHOP_ITEMS.split(",").map((id) => id.trim());
+  console.log(`Downloading workshop items: ${itemIds.join(", ")}`);
+  for (const itemId of itemIds) {
+    execFileSync(
+      "steamcmd",
+      [
+        "+login",
+        STEAM_USERNAME,
+        STEAM_PASSWORD || "",
+        "+workshop_download_item",
+        "3930080",
+        itemId,
+        "+quit",
+      ],
+      { stdio: "inherit" },
+    );
+  }
+}
+
 // Run the server
 execFileSync("sh", ["/app/RunServer.sh"], { stdio: "inherit" });
